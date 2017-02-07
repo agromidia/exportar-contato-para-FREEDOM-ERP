@@ -36,7 +36,7 @@ function getConnectionFirebird()
     {
         $db_username = "SYSDBA";
         $db_password = "masterkey";
-        $conn = new PDO('firebird:host=localhost;dbname=C:\\opt\\Firebird\\dados\\freedom.fdb;charset=UTF8', $db_username, $db_password);
+        $conn = new PDO('firebird:host=localhost;dbname=/opt/firebird/dados/freedom.fdb;charset=UTF8', $db_username, $db_password);
     }
     catch (Exception $e)
     {
@@ -62,26 +62,34 @@ function qtdDigitos($stringQtNumero)
 function addID()
 {
     $dbCon = getConnectionFirebird();
-    $SelectLastID = $dbCon->query("SELECT FIRST 1 CODCLI FROM VDCLIENTE ORDER BY CODCLI DESC");
+    $SelectLastID = $dbCon->query("SELECT FIRST 1 CODCTO FROM TKCONTATO ORDER BY CODCTO DESC");
     $LastID = $SelectLastID->fetchAll(PDO::FETCH_OBJ);
+
     foreach ($LastID as $i) {
-        $ultimoId = ++$i->CODCLI;
+        $ultimoId = ++$i->CODCTO;
     }
+
     return $ultimoId;
 }
 
 // Verifica se existe o CPF ou CNPJ
-function verificaCpfCnpj($vercpfcnpj)
+function verificaCpfCnpj($qtdcpf)
 {
     $dbCon = getConnectionFirebird();
-    $sql = "SELECT CNPJCLI, CPFCLI FROM VDCLIENTE WHERE CNPJCLI = '$vercpfcnpj' OR CPFCLI = '$vercpfcnpj'";
+    $sql = "SELECT CPFCTO FROM TKCONTATO WHERE CPFCTO = '$qtdcpf'";
     return $dbCon->query($sql)->fetchAll();
 }
 
 function formatoData($datetime)
 {
     $dt = new DateTime($datetime);
-    return $dt->format('Y.m.d');
+    return $dt->format('d-M-Y');
+}
+
+function formatoHora($datetime)
+{
+    $dt = new DateTime($datetime);
+    return $dt->format('H:i:s');
 }
 
 function formatoDataNasc($dateNasc)
