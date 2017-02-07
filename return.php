@@ -8,12 +8,10 @@ $data = json_decode($json, true);
 $horaAtual = date('H:i:s');
 $dataAtual = date('d.m.Y');
 $codecli = addID();
-// $codecli = 2291;
 
 $dbCon = getConnectionFirebird();
 
 // Conexão com o Firebird, pega o usuário e a sessão e salva no BD SGCONEXAO
-// $dbCon = getConnectionFirebird();
 $querySelect = "SELECT USER, CURRENT_CONNECTION FROM SGEMPRESA WHERE CODEMP='99'";
 $stmt = $dbCon->query($querySelect);
 $users = $stmt->fetchALL(PDO::FETCH_OBJ);
@@ -37,7 +35,7 @@ foreach ($data as $i) {
     $cpfcnpj2 = somenteNumeros($i['cpfcnpj']);
 }
 
-if (count(verificaCpfCnpj($cpfcnpj2)) === 0)
+if (count(verificaCpfCnpj($cpfcnpj2)) == 0)
 {
     echo "$cpfcnpj2 Não existe<br />";
     // CPF e/ou CNPJ não existe

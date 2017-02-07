@@ -4,10 +4,9 @@
 function getConnectionMysql()
 {
     try {
-        $db_username = "dietprosite";
-        $db_password = "hY2nBuyyYH9DmDFG";
-        $conn = new PDO('mysql:host=192.168.1.80;dbname=dietprosite;charset=utf8', $db_username, $db_password);
-        // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db_username = "root";
+        $db_password = "123456";
+        $conn = new PDO('mysql:host=localhost;dbname=dietprosite;charset=utf8', $db_username, $db_password);
     } catch (Exception $e) {
         echo 'ERRO:' . $e->getMessage();
     }
@@ -19,14 +18,10 @@ function getUsers()
 {
     try {
         $dbCon = getConnectionMysql();
-        $stmt = $dbCon->query("SELECT * FROM form_dietproclinicolite");
+        $stmt = $dbCon->query("SELECT * FROM a6nvl_demonstrativo");
         $users = $stmt->fetchALL(PDO::FETCH_OBJ);
         $dbCon = null;
         $json = json_encode($users, JSON_PRETTY_PRINT);
-
-        // echo "<pre>";
-        // echo $json;
-        // echo "</pre>";
 
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() .'}}';
@@ -42,7 +37,6 @@ function getConnectionFirebird()
         $db_username = "SYSDBA";
         $db_password = "masterkey";
         $conn = new PDO('firebird:host=localhost;dbname=C:\\opt\\Firebird\\dados\\freedom.fdb;charset=UTF8', $db_username, $db_password);
-        // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch (Exception $e)
     {
