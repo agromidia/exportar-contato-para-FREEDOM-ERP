@@ -30,6 +30,12 @@ else
     echo "Sessão não pode ser gravada <br />";
 }
 
+$email = array();
+$nome = array();
+$cpf = array();
+$ddd = array();
+$telefone =array();
+
 foreach ($data as $d)
 {
     $createdData = formatoData($d['created']);
@@ -56,6 +62,7 @@ foreach ($data as $d)
         {
             echo "<br />$cpf Dados Gravados.";
             cpfGravadosOuExistente($cpf,$user_id);
+            enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf);
         }
         else
         {
@@ -67,6 +74,13 @@ foreach ($data as $d)
     {
         echo " <br />CPF $cpf Existe";
         cpfGravadosOuExistente($cpf,$user_id);
+        enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf);
     }
 }
-var_dump($data);
+
+if (empty($data)) {
+    echo "Não houve inscrição.<br>";
+    enviaEmailNaoHouveCadastro();
+}
+
+// var_dump($data);

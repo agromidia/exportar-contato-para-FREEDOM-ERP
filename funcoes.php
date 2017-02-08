@@ -132,3 +132,112 @@ function formatoDataNasc($dateNasc)
     $dt = date_create_from_format('d/m/Y', $dateNasc);
     return date_format($dt,'Y.m.d');
 }
+
+//
+// Envio de eMails
+//
+function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
+{
+    // Inclui o arquivo class.phpmailer.php localizado na pasta class
+    require_once("PHPMailer/PHPMailerAutoload.php");
+    require_once("PHPMailer/class.smtp.php");
+
+    $mail = new PHPMailer;
+
+    $mail->SMTPDebug = 2;                               // Enable verbose debug output
+
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->CharSet = 'UTF-8';
+    $mail->Host = 'mail.dietpro.com.br;smtp.dietpro.com.br';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'suporte@dietpro.com.br';                 // SMTP username
+    $mail->Password = 'R45EzuN0';                           // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
+
+    $mail->setFrom('suporte@dietpro.com.br', 'Sistema de exportação de contato FREEDOM ERP');
+    $mail->addAddress('webmaster@assistemas.com.br', 'Joe User');     // Add a recipient
+    // $mail->addReplyTo('info@example.com', 'Information');
+
+
+    $mail->isHTML(true);                                  // Set email format to HTML
+
+    $mail->Subject = 'Houve Inscrições.';
+    $mail->Body    = "
+        <p><span style='font-size:18px;'>O sistema identificou inscri&ccedil;&atilde;o, o contato j&aacute; existe no sistema FREEDOM ERP CRM.</span></p>
+        <p>Dados Cadastrados</p>
+        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 500px;'>
+            <tbody>
+                <tr>
+                    <td>Nome:</td>
+                    <td>$nome</td>
+                </tr>
+                <tr>
+                    <td>CPF:</td>
+                    <td>$cpf</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>$email</td>
+                </tr>
+                <tr>
+                    <td>Contato:</td>
+                    <td>$ddd $telefone</td>
+                </tr>
+            </tbody>
+        </table>
+    ";
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    if(!$mail->send()) {
+        echo 'Message could not be sent.<br>';
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Message has been sent';
+    }
+}
+
+function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf)
+{
+
+}
+
+function enviaEmailNaoHouveCadastro()
+{
+
+    // Inclui o arquivo class.phpmailer.php localizado na pasta class
+    require_once("PHPMailer/PHPMailerAutoload.php");
+    require_once("PHPMailer/class.smtp.php");
+
+    $mail = new PHPMailer;
+
+    $mail->SMTPDebug = 2;                               // Enable verbose debug output
+
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->CharSet = 'UTF-8';
+    $mail->Host = 'mail.dietpro.com.br;smtp.dietpro.com.br';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'suporte@dietpro.com.br';                 // SMTP username
+    $mail->Password = 'R45EzuN0';                           // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
+
+    $mail->setFrom('suporte@dietpro.com.br', 'Sistema de exportação de contato FREEDOM ERP');
+    $mail->addAddress('webmaster@assistemas.com.br', 'Joe User');     // Add a recipient
+    // $mail->addReplyTo('info@example.com', 'Information');
+
+
+    $mail->isHTML(true);                                  // Set email format to HTML
+
+    $mail->Subject = 'Não Houve Inscrições.';
+    $mail->Body    = '<p><span style="font-size:18px;">O sistema n&atilde;o identificou inscri&ccedil;&otilde;es.</span></p>';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    if(!$mail->send()) {
+        echo 'Message could not be sent.<br>';
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Message has been sent';
+    }
+
+}
