@@ -19,7 +19,7 @@ function getUsers()
 {
     try {
         $dbCon = getConnectionMysql();
-        $stmt = $dbCon->query("SELECT * FROM a6nvl_demonstrativo");
+        $stmt = $dbCon->query("SELECT * FROM a6nvl_demonstrativo WHERE status=0");
         $users = $stmt->fetchALL(PDO::FETCH_OBJ);
         $dbCon = null;
         $json = json_encode($users, JSON_PRETTY_PRINT);
@@ -35,9 +35,9 @@ function getConnectionFirebird()
 {
     try
     {
-        $db_username = "SYSDBA";
-        $db_password = "masterkey";
-        $conn = new PDO('firebird:host=localhost;dbname=/opt/firebird/dados/freedom.fdb;charset=UTF8', $db_username, $db_password);
+        $conn = new PDO('firebird:host=localhost;dbname=/opt/firebird/dados/freedom.fdb;charset=UTF8', 'SYSDBA', 'masterkey');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     }
     catch (Exception $e)
     {
