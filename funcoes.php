@@ -4,9 +4,9 @@
 function getConnectionMysql()
 {
     try {
-        $db_username = "root";
-        $db_password = "123456";
-        $conn = new PDO('mysql:host=localhost;dbname=dietprosite;charset=utf8', $db_username, $db_password);
+        $db_username = "dietprosite";
+        $db_password = "hY2nBuyyYH9DmDFG";
+        $conn = new PDO('mysql:host=192.168.1.80;dbname=dietprosite;charset=utf8', $db_username, $db_password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (Exception $e) {
         echo 'ERRO:' . $e->getMessage();
@@ -70,7 +70,7 @@ function getConnectionFirebird()
 {
     try
     {
-        $conn = new PDO('firebird:host=localhost;dbname=/opt/firebird/dados/freedom.fdb;charset=UTF8', 'SYSDBA', 'masterkey');
+        $conn = new PDO('firebird:host=localhost;dbname=C:\\opt\\Firebird\\dados\\freedom.fdb;charset=UTF8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch (Exception $e)
