@@ -17,8 +17,8 @@ function getConnectionMysql()
 // Pega todos os usuários e envia via webservice
 function getUsers()
 {
+    $dbCon = getConnectionMysql();
     try {
-        $dbCon = getConnectionMysql();
         $stmt = $dbCon->query("SELECT * FROM a6nvl_demonstrativo WHERE status=0");
         $users = $stmt->fetchALL(PDO::FETCH_OBJ);
         $dbCon = null;
@@ -30,6 +30,41 @@ function getUsers()
     return $json;
 }
 
+function returnUsersStatus($req, $res, $args)
+{
+    $cpf = $args['cpf'];
+    $id = $args['id'];
+    $dbCon = getConnectionMysql();
+    $sql = "UPDATE `a6nvl_demonstrativo` SET `status`='1' WHERE `cpf`='$cpf' AND `id`='$id'";
+    try
+    {
+        $result = $dbCon->exec($sql);
+
+        if($result !== false)
+        {
+            echo "Status alterado";
+            $dbCon = null;        // Disconnect
+        }
+        else
+        {
+            echo "Erro ao alterar o Status";
+        }
+    }
+    catch (PDOException $e)
+    {
+        echo '{"error":{"text":' . $e->getMessage() .'}}';
+    }
+}
+
+function cpfGravadosOuExistente($cpf,$id)
+{
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,"http://localhost/api/returnUsers/$cpf/$id");
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    $output=curl_exec($ch);
+    curl_close($ch);
+}
+
 // Conexão com BD Firebird
 function getConnectionFirebird()
 {
@@ -37,7 +72,6 @@ function getConnectionFirebird()
     {
         $conn = new PDO('firebird:host=localhost;dbname=/opt/firebird/dados/freedom.fdb;charset=UTF8', 'SYSDBA', 'masterkey');
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     }
     catch (Exception $e)
     {
@@ -73,7 +107,7 @@ function addID()
     return $ultimoId;
 }
 
-// Verifica se existe o CPF ou CNPJ
+// Verifica se existe o CPF
 function verificaCpfCnpj($qtdcpf)
 {
     $dbCon = getConnectionFirebird();

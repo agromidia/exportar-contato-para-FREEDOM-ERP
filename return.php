@@ -37,7 +37,7 @@ foreach ($data as $d)
     $telefone = somenteNumeros($d['telefone']);
     $cpf = somenteNumeros($d['cpf']);
     $codecli = addID();
-    $user_id = $d['user_id'];
+    $user_id = $d['id'];
     $nome = $d['nome'];
     $profissao = $d['profissao'];
     $produto = $d['produto'];
@@ -55,6 +55,7 @@ foreach ($data as $d)
         if($stmt->execute())
         {
             echo "<br />$cpf Dados Gravados.";
+            cpfGravadosOuExistente($cpf,$user_id);
         }
         else
         {
@@ -65,7 +66,7 @@ foreach ($data as $d)
     else
     {
         echo " <br />CPF $cpf Existe";
+        cpfGravadosOuExistente($cpf,$user_id);
     }
 }
-
 var_dump($data);
