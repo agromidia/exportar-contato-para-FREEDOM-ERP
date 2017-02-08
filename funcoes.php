@@ -7,6 +7,7 @@ function getConnectionMysql()
         $db_username = "root";
         $db_password = "123456";
         $conn = new PDO('mysql:host=localhost;dbname=dietprosite;charset=utf8', $db_username, $db_password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (Exception $e) {
         echo 'ERRO:' . $e->getMessage();
     }
