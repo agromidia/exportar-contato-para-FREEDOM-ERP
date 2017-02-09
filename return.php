@@ -35,6 +35,7 @@ $nome = array();
 $cpf = array();
 $ddd = array();
 $telefone =array();
+$produto =array();
 
 foreach ($data as $d)
 {
@@ -68,7 +69,7 @@ foreach ($data as $d)
 
             // Função envia um email com os dados do novo cadastro
             // para o setor MKTVEN.
-            enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf);
+            enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf,$produto);
         }
         else
         {
@@ -86,7 +87,7 @@ foreach ($data as $d)
 
         // Função envia um email para o setor MKTVEN informando que
         // o cpf já existe, junto com os dados do contato.
-        enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf);
+        enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf,$produto);
     }
 }
 

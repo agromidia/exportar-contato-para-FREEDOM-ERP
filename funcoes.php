@@ -136,7 +136,7 @@ function formatoDataNasc($dateNasc)
 //
 // Envio de eMails
 //
-function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
+function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf,$produto)
 {
     // Inclui o arquivo class.phpmailer.php localizado na pasta class
     require_once("PHPMailer/PHPMailerAutoload.php");
@@ -163,9 +163,10 @@ function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
 
     $mail->Subject = '✘ Cadastro Já Existente.';
     $mail->Body    = "
-        <p><span style='font-size:18px;'>O sistema identificou inscri&ccedil;&atilde;o, o contato j&aacute; existe no sistema FREEDOM ERP CRM.</span></p>
-        <p><span style='font-size:18px;color:#696969;'>Dados Cadastrados</span></p>
-        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 200px;'>
+        <h3>Contato Já Existe</h3>
+        <p><span style='font-size:18px;color:#696969;'>O sistema identificou que o CPF $cpf já está cadastrado no FREEDOM ERP CRM.</span></p>
+        <p><span style='font-size:18px;color:#696969;'>Não foi possível realizar o seu cadastro</span></p>
+        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 250px;'>
             <tbody>
                 <tr>
                     <td><span style='color:#008080;font-size: 18px;'><strong>Nome:</strong></span></td>
@@ -183,20 +184,26 @@ function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
                     <td><span style='color:#008080;font-size: 18px;'><strong>Contato:</strong></span></td>
                     <td><span style='color:#696969;font-size: 18px;'><strong>$ddd $telefone</strong></span></td>
                 </tr>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Produto(s):</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$produto</strong></span></td>
+                </tr>
             </tbody>
         </table>
     ";
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) {
-        echo 'Message could not be sent.<br>';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-    } else {
-        echo 'Message has been sent';
+        echo '<br>Message could not be sent.';
+        echo '<br>Mailer Error: ' . $mail->ErrorInfo;
+    }
+    else
+    {
+        echo '<br>Message has been sent';
     }
 }
 
-function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf)
+function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf,$produto)
 {
     // Inclui o arquivo class.phpmailer.php localizado na pasta class
     require_once("PHPMailer/PHPMailerAutoload.php");
@@ -223,9 +230,10 @@ function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf)
 
     $mail->Subject = '✔ Novo Cadastro.';
     $mail->Body    = "
+        <h3>Cadastro de Novo Contato</h3>
         <p><span style='font-size:18px;color:#696969;'>O sistema identificou inscri&ccedil;&atilde;o, o novo contato foi cadastrado no sistema FREEDOM ERP CRM.</span></p>
         <p><span style='font-size:18px;color:#696969;'>Dados Cadastrados</span></p>
-        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 200px;'>
+        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 250px;'>
             <tbody>
                 <tr>
                     <td><span style='color:#008080;font-size: 18px;'><strong>Nome:</strong></span></td>
@@ -243,16 +251,22 @@ function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf)
                     <td><span style='color:#008080;font-size: 18px;'><strong>Contato:</strong></span></td>
                     <td><span style='color:#696969;font-size: 18px;'><strong>$ddd $telefone</strong></span></td>
                 </tr>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Produto(s):</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$produto</strong></span></td>
+                </tr>
             </tbody>
         </table>
     ";
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) {
-        echo 'Message could not be sent.<br>';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-    } else {
-        echo 'Message has been sent';
+        echo '<br>Message could not be sent.';
+        echo '<br>Mailer Error: ' . $mail->ErrorInfo;
+    }
+    else
+    {
+        echo '<br>Message has been sent';
     }
 
 }
@@ -284,16 +298,19 @@ function enviaEmailNaoHouveCadastro()
     $mail->isHTML(true);                                  // Set email format to HTML
 
     $mail->Subject = '☐ Não Houve Inscrições.';
-    $mail->Body    = '<p><span style="font-size:18px;color:#696969;">O sistema n&atilde;o identificou inscri&ccedil;&otilde;es.</span></p>';
+    $mail->Body    = '
+        <h2>Sem Cadastro de Novo(s) Contato(s)</h2>
+        <p><span style="font-size:18px;color:#696969;">O sistema identificou que não houve inscrição de contato(s)</span></p>
+    ';
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) {
-        echo 'Message could not be sent.<br>';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        echo '<br>Message could not be sent.';
+        echo '<br>Mailer Error: ' . $mail->ErrorInfo;
     }
     else
     {
-        echo 'Message has been sent';
+        echo '<br>Message has been sent';
     }
 
 }
