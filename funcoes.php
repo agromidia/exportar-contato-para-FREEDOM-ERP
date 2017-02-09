@@ -144,7 +144,7 @@ function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
 
     $mail = new PHPMailer;
 
-    $mail->SMTPDebug = 2;                               // Enable verbose debug output
+    // $mail->SMTPDebug = 2;                               // Enable verbose debug output
 
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->CharSet = 'UTF-8';
@@ -159,30 +159,29 @@ function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
     $mail->addAddress('webmaster@assistemas.com.br', 'Joe User');     // Add a recipient
     // $mail->addReplyTo('info@example.com', 'Information');
 
-
     $mail->isHTML(true);                                  // Set email format to HTML
 
-    $mail->Subject = 'Houve Inscrições.';
+    $mail->Subject = '✘ Cadastro Já Existente.';
     $mail->Body    = "
         <p><span style='font-size:18px;'>O sistema identificou inscri&ccedil;&atilde;o, o contato j&aacute; existe no sistema FREEDOM ERP CRM.</span></p>
-        <p>Dados Cadastrados</p>
-        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 500px;'>
+        <p><span style='font-size:18px;color:#696969;'>Dados Cadastrados</span></p>
+        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 200px;'>
             <tbody>
                 <tr>
-                    <td>Nome:</td>
-                    <td>$nome</td>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Nome:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$nome</strong></span></td>
                 </tr>
                 <tr>
-                    <td>CPF:</td>
-                    <td>$cpf</td>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>CPF:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$cpf</strong></span></td>
                 </tr>
                 <tr>
-                    <td>Email:</td>
-                    <td>$email</td>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Email:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$email</strong></span></td>
                 </tr>
                 <tr>
-                    <td>Contato:</td>
-                    <td>$ddd $telefone</td>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Contato:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$ddd $telefone</strong></span></td>
                 </tr>
             </tbody>
         </table>
@@ -199,19 +198,13 @@ function enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf)
 
 function enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf)
 {
-
-}
-
-function enviaEmailNaoHouveCadastro()
-{
-
     // Inclui o arquivo class.phpmailer.php localizado na pasta class
     require_once("PHPMailer/PHPMailerAutoload.php");
     require_once("PHPMailer/class.smtp.php");
 
     $mail = new PHPMailer;
 
-    $mail->SMTPDebug = 2;                               // Enable verbose debug output
+    // $mail->SMTPDebug = 2;                               // Enable verbose debug output
 
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->CharSet = 'UTF-8';
@@ -226,17 +219,80 @@ function enviaEmailNaoHouveCadastro()
     $mail->addAddress('webmaster@assistemas.com.br', 'Joe User');     // Add a recipient
     // $mail->addReplyTo('info@example.com', 'Information');
 
-
     $mail->isHTML(true);                                  // Set email format to HTML
 
-    $mail->Subject = 'Não Houve Inscrições.';
-    $mail->Body    = '<p><span style="font-size:18px;">O sistema n&atilde;o identificou inscri&ccedil;&otilde;es.</span></p>';
+    $mail->Subject = '✔ Novo Cadastro.';
+    $mail->Body    = "
+        <p><span style='font-size:18px;color:#696969;'>O sistema identificou inscri&ccedil;&atilde;o, o novo contato foi cadastrado no sistema FREEDOM ERP CRM.</span></p>
+        <p><span style='font-size:18px;color:#696969;'>Dados Cadastrados</span></p>
+        <table align='left' border='0' cellpadding='1' cellspacing='1' style='width: 200px;'>
+            <tbody>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Nome:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$nome</strong></span></td>
+                </tr>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>CPF:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$cpf</strong></span></td>
+                </tr>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Email:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$email</strong></span></td>
+                </tr>
+                <tr>
+                    <td><span style='color:#008080;font-size: 18px;'><strong>Contato:</strong></span></td>
+                    <td><span style='color:#696969;font-size: 18px;'><strong>$ddd $telefone</strong></span></td>
+                </tr>
+            </tbody>
+        </table>
+    ";
     // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     if(!$mail->send()) {
         echo 'Message could not be sent.<br>';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
     } else {
+        echo 'Message has been sent';
+    }
+
+}
+
+function enviaEmailNaoHouveCadastro()
+{
+
+    // Inclui o arquivo class.phpmailer.php localizado na pasta class
+    require_once("PHPMailer/PHPMailerAutoload.php");
+    require_once("PHPMailer/class.smtp.php");
+
+    $mail = new PHPMailer;
+
+    // $mail->SMTPDebug = 2;                               // Enable verbose debug output
+
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->CharSet = 'UTF-8';
+    $mail->Host = 'mail.dietpro.com.br;smtp.dietpro.com.br';  // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'suporte@dietpro.com.br';                 // SMTP username
+    $mail->Password = 'R45EzuN0';                           // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
+
+    $mail->setFrom('suporte@dietpro.com.br', 'Sistema de exportação de contato FREEDOM ERP');
+    $mail->addAddress('webmaster@assistemas.com.br', 'Joe User');     // Add a recipient
+    // $mail->addReplyTo('info@example.com', 'Information');
+
+    $mail->isHTML(true);                                  // Set email format to HTML
+
+    $mail->Subject = '☐ Não Houve Inscrições.';
+    $mail->Body    = '<p><span style="font-size:18px;color:#696969;">O sistema n&atilde;o identificou inscri&ccedil;&otilde;es.</span></p>';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    if(!$mail->send()) {
+        echo 'Message could not be sent.<br>';
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+    }
+    else
+    {
         echo 'Message has been sent';
     }
 

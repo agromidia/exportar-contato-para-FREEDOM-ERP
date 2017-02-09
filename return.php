@@ -61,7 +61,13 @@ foreach ($data as $d)
         if($stmt->execute())
         {
             echo "<br />$cpf Dados Gravados.";
+
+            // função enviara o status do contato se já existe ou não
+            // Caso exista, retorna e altera o estatus de 0(zero) para 1(um).
             cpfGravadosOuExistente($cpf,$user_id);
+
+            // Função envia um email com os dados do novo cadastro
+            // para o setor MKTVEN.
             enviaEmailContatoCadastrado($nome,$email,$ddd,$telefone,$cpf);
         }
         else
@@ -73,13 +79,22 @@ foreach ($data as $d)
     else
     {
         echo " <br />CPF $cpf Existe";
+
+        // função enviara o status do contato se já existe ou não
+        // Caso exista, retorna e altera o estatus de 0(zero) para 1(um).
         cpfGravadosOuExistente($cpf,$user_id);
+
+        // Função envia um email para o setor MKTVEN informando que
+        // o cpf já existe, junto com os dados do contato.
         enviaEmailCpfExiste($nome,$email,$ddd,$telefone,$cpf);
     }
 }
 
 if (empty($data)) {
-    echo "Não houve inscrição.<br>";
+    echo "N&atilde;o houve inscri&ccedil;&atilde;o.<br>";
+
+    // Envia um email informando que não houve inscrição
+    // no momento que rodou o script
     enviaEmailNaoHouveCadastro();
 }
 
